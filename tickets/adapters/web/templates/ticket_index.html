@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="col-lg-9">
+            <div class="row align-items-center">
+                <h1>Tickets</h1>
+                <div class="col"></div>
+                <div>
+                    <a class="btn btn-outline-primary">Add ticket</a>
+                </div>
+            </div>
+            
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Created at</th>
+                        <th>Status</th>
+                        <th>Type</th>
+                        <th>Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for ticket in tickets %}
+                    <tr>
+                        <td><a href="{{url_for('detail_ticket', ticket_code=ticket.code)}}">{{ticket.title}}</a></td>
+                        <td>{{ticket.creation_date|dateformat}}</td>
+                        <td>{{ticket.status.value}}</td>
+                        <td>{{ticket.type.value}}</td>
+                        <td>{{ticket.code|truncate(18)}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <form method="POST">
+                <input type="text" name="author" placeholder="Author">
+                <input type="text" name="title" placeholder="Title">
+                <input type="text" name="description" placeholder="Description">
+                <button>Enviar</button>
+            </form>
+        </div>
+        <div class="col-lg-3"></div>
+    </div>
+{% endblock content %}
