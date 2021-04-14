@@ -23,5 +23,8 @@ class InMemoryTicketRepository(TicketRepository):
     def filter_by_type(self, type):
         return [ticket for ticket in self.tickets.values() if ticket.type == type]
 
-    def get_tickets_authored_by(self, username):
-        return [ticket for ticket in self.tickets.values() if ticket.author.username == username]
+    def get_tickets_authored_by(self, user):
+        if type(user, str):
+            return [ticket for ticket in self.tickets.values() if ticket.author.username == user]
+        else:
+            return [ticket for ticket in self.tickets.values() if ticket.author == user]
