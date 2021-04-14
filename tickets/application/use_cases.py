@@ -38,3 +38,8 @@ def change_ticket_status(ticket: Ticket, new_status: TicketStatus, ticket_reposi
 @inject.autoparams('account_repository')
 def get_account_by_username(username: str, account_repository: AccountRepository):
     return account_repository.get_by_username(username)
+
+
+@inject.autoparams('account_repository')
+def check_username_exists(username: str, account_repository: AccountRepository):
+    return account_repository.exists_username(username)

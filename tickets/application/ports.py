@@ -21,7 +21,7 @@ class TicketRepository(ABC):
         raise NotImplementedError
     
     @abstractmethod
-    def get_tickets_authored_by(self, username: Union[str, Account]):
+    def get_tickets_authored_by(self, user: Union[str, Account]):
         raise NotImplementedError
 
 
@@ -36,4 +36,8 @@ class AccountRepository(ABC):
     
     @abstractmethod
     def get_by_username(self, username: str) -> Account:
+        raise NotImplementedError
+
+    @abstractmethod
+    def exists_username(self, username: str) -> bool:
         raise NotImplementedError
