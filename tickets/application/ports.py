@@ -29,10 +29,6 @@ class AccountRepository(ABC):
     @abstractmethod
     def save(self, account: Account) -> Account:
         raise NotImplementedError
-
-    @abstractmethod
-    def get_by_id(self, account_id: str) -> Account:
-        raise NotImplementedError
     
     @abstractmethod
     def get_by_username(self, username: str) -> Account:

@@ -5,15 +5,10 @@ from enum import Enum
 from typing import List
 
 
-def generate_id():
-    return str(uuid4())
-
-
 @dataclass
 class Account:
     username: str
     email: str
-    id: str = field(default_factory=generate_id)
 
 
 @dataclass
@@ -22,8 +17,23 @@ class Comment:
     content: str
 
 
+@dataclass
+class HistoricRegistry:
+    class Operations(Enum):
+        CREATION = 'creation'
+        UPDATE = 'update'
+        COMMENT = 'comment'
+
+    operation: Operations
+    field: str
+    old_value: str = None
+    new_value: str = None
+    datetime: datetime = field(default_factory=datetime.now, init=False)
+
+
 class TicketStatus(Enum):
     NEW = 'New'
+    NEED_MORE_INFO = 'Need More Info'
     ASSIGNED = 'Assigned'
     WONT_FIX = 'Won\'t Fix'
     REJECTED = 'Rejected'
@@ -42,17 +52,26 @@ class Ticket:
     title: str
     description: str
     type: TicketType
-    code: str = field(default_factory=generate_id)
+    code: int
     status: TicketStatus = TicketStatus.NEW
     assigned_to: Account = None
     tags: List[str] = field(default_factory=list)
+    closing_message: str = ""
     creation_date: datetime = field(default_factory=datetime.now)
-    updated_at: datetime = field(default_factory=datetime.now)
     comments: List[Comment] = field(default_factory=list)
+    changes_history: List[HistoricRegistry] = field(default_factory=list)
+
+    def __post_init__(self):
+        self.changes_history.append(HistoricRegistry('creation', None, None, None))
 
     def __setattr__(self, name, value):
+        try:
+            old_value = getattr(self, name)
+            self.changes_history.append(HistoricRegistry('update', name, old_value, value))
+        except AttributeError:
+            pass
+
         super().__setattr__(name, value)
-        super().__setattr__('updated_at', datetime.now())
 
     def add_comment(self, author: Account, text: str):
         self.comments.append(Comment(author, text))
@@ -61,5 +80,3 @@ class Ticket:
         self.assigned_to = user
         self.status = TicketStatus.ASSIGNED
 
-    def close(self, closing_status):
-        self.status = closing_status

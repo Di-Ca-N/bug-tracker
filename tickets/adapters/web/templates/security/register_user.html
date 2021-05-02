@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {{current_user}}
+    <div class="container">
+        <div class="col-12 col-md-9 col-lg-6">
+            <form method="POST">
+                {{register_user_form.csrf_token}}
+                {{register_user_form.errors}}
+                <div class="form-group">
+                    {{register_user_form.email.label}}
+                    {{register_user_form.email(class_="form-control")}}
+                </div>
+
+                <div class="form-group">
+                    {{register_user_form.username.label}}
+                    {{register_user_form.username(class_="form-control")}}
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            {{register_user_form.password.label}}
+                            {{register_user_form.password(class_="form-control")}}
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            {{register_user_form.password_confirm.label}}
+                            {{register_user_form.password_confirm(class_="form-control")}}
+                        </div>
+                    </div>
+                </div>
+
+                <button type="subtmit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

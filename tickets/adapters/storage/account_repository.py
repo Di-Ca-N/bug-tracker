@@ -9,10 +9,7 @@ class InMemoryAccountRepository(AccountRepository):
         self.accounts: Dict[str, Account] = {}
 
     def save(self, account: Account) -> Account:
-        self.accounts[account.id] = account
-
-    def get_by_id(self, account_id: str) -> Account:
-        return self.accounts[account_id]
+        self.accounts[account.username] = account
 
     def get_by_username(self, username: str) -> Account:
         accounts = [account for account in self.accounts.values() if account.username == username]

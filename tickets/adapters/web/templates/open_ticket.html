@@ -6,11 +6,7 @@
         <div class="col-12 col-md-9 col-lg-6">
             <form method="POST">
                 {{form.csrf_token}}
-                <div class="form-group">
-                    {{form.author.label}}
-                    {{form.author(class_="form-control")}}
-                    {{form.author.errors}}
-                </div>
+                {{form.errors}}
                 <div class="row">
                     <div class="form-group col">
                         {{form.title.label}}

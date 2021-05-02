@@ -43,3 +43,10 @@ def get_account_by_username(username: str, account_repository: AccountRepository
 @inject.autoparams('account_repository')
 def check_username_exists(username: str, account_repository: AccountRepository):
     return account_repository.exists_username(username)
+
+@inject.autoparams('account_repository')
+def register_account(username: str, email: str, account_repository: AccountRepository):
+    if check_username_exists(username):
+        raise ValueError("Account already exists")
+    account = Account(username=username, email=email)
+    return account_repository.save(account)
